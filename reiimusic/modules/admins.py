@@ -42,13 +42,13 @@ async def update_admin(client, message: Message):
     await message.reply_text("❇️ Admin cache refreshed!")
 
 
-@Client.on_message(command("pause") & other_filters)
+@Client.on_message(command("_jeda") & other_filters)
 @errors
 @authorized_users_only
 async def pause(_, message: Message):
     chat_id = get_chat_id(message.chat)
     (
-      await message.reply_text("▶️ Paused!")
+      await message.reply_text("Lagu Dijeda🔴")
     ) if (
         callsmusic.pause(chat_id)
     ) else (
@@ -57,13 +57,13 @@ async def pause(_, message: Message):
         
 
 
-@Client.on_message(command("resume") & other_filters)
+@Client.on_message(command("_lanjut") & other_filters)
 @errors
 @authorized_users_only
 async def resume(_, message: Message):
     chat_id = get_chat_id(message.chat)
     (
-        await message.reply_text("⏸ Resumed!")
+        await message.reply_text("Lagu Dilanjut🟢")
     ) if (
         callsmusic.resume(chat_id)
     ) else (
@@ -72,13 +72,13 @@ async def resume(_, message: Message):
         
 
 
-@Client.on_message(command("end") & other_filters)
+@Client.on_message(command("_stop") & other_filters)
 @errors
 @authorized_users_only
 async def stop(_, message: Message):
     chat_id = get_chat_id(message.chat)
     if chat_id not in callsmusic.active_chats:
-        await message.reply_text("❗ Nothing is streaming!")
+        await message.reply_text("Ndak ada lagu yg diputar kok di stop🤦")
     else:
         try:
             queues.clear(chat_id)
@@ -86,17 +86,17 @@ async def stop(_, message: Message):
             pass
 
         await callsmusic.stop(chat_id)
-        await message.reply_text("❌ Stopped streaming!")
+        await message.reply_text("Lagu Dihentikan 🤗")
 
 
-@Client.on_message(command("skip") & other_filters)
+@Client.on_message(command("_skip") & other_filters)
 @errors
 @authorized_users_only
 async def skip(_, message: Message):
     global que
     chat_id = get_chat_id(message.chat)
     if chat_id not in callsmusic.active_chats:
-        await message.reply_text("❗ Nothing is playing to skip!")
+        await message.reply_text("Ndak ada lagu yg diputar kok diskip 🤦")
     else:
         queues.task_done(chat_id)
         if queues.is_empty(chat_id):
@@ -109,7 +109,7 @@ async def skip(_, message: Message):
         skip = qeue.pop(0)
     if not qeue:
         return
-    await message.reply_text(f"- Skipped **{skip[0]}**\n- Now Playing **{qeue[0][0]}**")
+    await message.reply_text(f"❌Lewati **{skip[0]}**\n- ⭕ Diputar **{qeue[0][0]}**")
     
 
 @Client.on_message(command('mute') & other_filters)
